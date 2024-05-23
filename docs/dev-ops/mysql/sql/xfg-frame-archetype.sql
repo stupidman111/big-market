@@ -86,7 +86,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `strategy_award`;
 CREATE TABLE `strategy_award` (
     `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-    `startegy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
+    `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
     `award_id` int(8) NOT NULL COMMENT '抽奖奖品ID - 内部流转使用',
     `award_title` varchar(128) NOT NULL COMMENT '抽奖奖品标题',
     `award_subtitle` varchar(128) DEFAULT NULL COMMENT '抽奖奖品副标题',
@@ -98,14 +98,14 @@ CREATE TABLE `strategy_award` (
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
-    KEY `idx_strategy_id_award_id` (`startegy_id`, `award_id`)
+    KEY `idx_strategy_id_award_id` (`strategy_id`, `award_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of `strategy_award`
 -- ----------------------------
 BEGIN;
-INSERT INTO `strategy_award` (`id`, `startegy_id`, `award_id`, `award_title`, `award_subtitle`, `award_count`, `award_count_surplus`, `award_rate`, `rule_models`, `sort`)
+INSERT INTO `strategy_award` (`id`, `strategy_id`, `award_id`, `award_title`, `award_subtitle`, `award_count`, `award_count_surplus`, `award_rate`, `rule_models`, `sort`)
 VALUES
     (1, 100001, 101, '随机积分', NULL, 80000, 80000, 80.000, 'rule_random,rule_luck_award', 1),
     (2, 100001, 102, '5次使用', NULL, 10000, 10000, 10.000, 'rule_luck_award', 2),
