@@ -107,15 +107,15 @@ CREATE TABLE `strategy_award` (
 BEGIN;
 INSERT INTO `strategy_award` (`id`, `strategy_id`, `award_id`, `award_title`, `award_subtitle`, `award_count`, `award_count_surplus`, `award_rate`, `rule_models`, `sort`)
 VALUES
-    (1, 100001, 101, '随机积分', NULL, 80000, 80000, 80.000, 'rule_random,rule_luck_award', 1),
-    (2, 100001, 102, '5次使用', NULL, 10000, 10000, 10.000, 'rule_luck_award', 2),
-    (3, 100001, 103, '10次使用', NULL, 5000, 5000, 5.000, 'rule_luck_award', 3),
-    (4, 100001, 104, '20次使用', NULL, 4000, 4000, 4.000, 'rule_luck_award', 4),
-    (5, 100001, 105, '增加gpt-4对话模型', NULL, 600, 600, 0.600, 'rule_luck_award', 5),
-    (6, 100001, 106, '增加dall-e-2画图模型', NULL, 150, 150, 0.150, 'rule_luck_award', 6),
-    (7, 100001, 107, '增加dall-e-3画图模型', '抽奖1次后解锁', 150, 150, 0.150, 'rule_lock,rule_luck_award', 7),
-    (8, 100001, 108, '增加100次使用','抽奖2次后解锁', 90, 90, 0.090, 'rule_lock,rule_luck_award', 8),
-    (9, 100001, 109, '解锁全部模型','抽奖6次后解锁', 10, 10, 0.010, 'rule_lock,rule_luck_award', 9);
+    (1, 100001, 101, '随机积分', NULL, 80000, 80000, 0.3000, 'rule_random,rule_luck_award', 1),
+    (2, 100001, 102, '5次使用', NULL, 10000, 10000, 0.2000, 'rule_luck_award', 2),
+    (3, 100001, 103, '10次使用', NULL, 5000, 5000, 0.2000, 'rule_luck_award', 3),
+    (4, 100001, 104, '20次使用', NULL, 4000, 4000, 0.1000, 'rule_luck_award', 4),
+    (5, 100001, 105, '增加gpt-4对话模型', NULL, 600, 600, 0.1000, 'rule_luck_award', 5),
+    (6, 100001, 106, '增加dall-e-2画图模型', NULL, 150, 150, 0.0500, 'rule_luck_award', 6),
+    (7, 100001, 107, '增加dall-e-3画图模型', '抽奖1次后解锁', 150, 150, 0.0400, 'rule_lock,rule_luck_award', 7),
+    (8, 100001, 108, '增加100次使用','抽奖2次后解锁', 90, 90, 0.0099, 'rule_lock,rule_luck_award', 8),
+    (9, 100001, 109, '解锁全部模型','抽奖6次后解锁', 10, 10, 0.0001, 'rule_lock,rule_luck_award', 9);
 COMMIT;
 
 -- ----------------------------
