@@ -21,8 +21,17 @@ public class StrategyRuleTest {
 	private IStrategyRuleDao strategyRuleDao;
 
 	@Test
-	public void queryStrategyRuleList() {
+	public void test_queryStrategyRuleList() {
 		List<StrategyRule> strategyRules = strategyRuleDao.queryStrategyRuleList();
 		log.info("测试结果：{}", JSON.toJSONString(strategyRules));
+	}
+
+	@Test
+	public void test_queryStrategyRule() {
+		StrategyRule strategyRule = new StrategyRule();
+		strategyRule.setStrategyId(100001L);
+		strategyRule.setRuleModel("rule_weight");
+		strategyRule = strategyRuleDao.queryStrategyRule(strategyRule);
+		log.info("测试结果：{}", JSON.toJSONString(strategyRule));
 	}
 }

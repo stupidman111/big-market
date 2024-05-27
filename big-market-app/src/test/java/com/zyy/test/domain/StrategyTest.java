@@ -1,6 +1,7 @@
 package com.zyy.test.domain;
 
 import com.zyy.domain.strategy.service.armory.IStrategyArmory;
+import com.zyy.domain.strategy.service.armory.IStrategyDispatch;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,10 @@ public class StrategyTest {
 	@Resource
 	private IStrategyArmory strategyArmory;
 
+	@Resource
+	private IStrategyDispatch strategyDispatch;
+
+
 	@Test
 	public void test_strategyArmory() {
 		boolean success = strategyArmory.assembleLotteryStrategy(100001L);
@@ -24,7 +29,15 @@ public class StrategyTest {
 	}
 
 	@Test
-	public void test_getAssembleRandomVal() {
-		log.info("测试结果：{} - 奖品ID值", strategyArmory.getRandomAwardId(100001L));
+	public void test_getRandomAwardId() {
+		log.info("测试结果：{} - 奖品ID值", strategyDispatch.getRandomAwardId(100001L));
+	}
+
+	@Test
+	public void test_getRandomAwardId_ruleWeightValue() {
+		log.info("测试结果：{} - 4000 策略配置", strategyDispatch.getRandomAwardId(100001L, "4000:102,103,104,105"));
+		log.info("测试结果：{} - 5000 策略配置", strategyDispatch.getRandomAwardId(100001L, "5000:102,103,104,105,106,107"));
+		log.info("测试结果：{} - 6000 策略配置", strategyDispatch.getRandomAwardId(100001L, "6000:102,103,104,105,106,107,108,109"));
+
 	}
 }

@@ -10,4 +10,6 @@ public interface IStrategyDao {
 
 	/** 查询所有策略信息 **/
 	List<Strategy> queryStrategyList();
+
+	Strategy queryStrategyByStrategyId(Long strategyId);
 }

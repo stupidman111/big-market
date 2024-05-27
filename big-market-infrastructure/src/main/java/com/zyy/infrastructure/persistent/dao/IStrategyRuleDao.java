@@ -10,4 +10,6 @@ public interface IStrategyRuleDao {
 
 	/** 查询所有【策略-规则】信息 **/
 	List<StrategyRule> queryStrategyRuleList();
+
+	StrategyRule queryStrategyRule(StrategyRule strategyRule);
 }

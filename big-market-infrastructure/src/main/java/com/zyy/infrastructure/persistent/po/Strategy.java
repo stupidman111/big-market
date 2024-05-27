@@ -13,6 +13,8 @@ public class Strategy {
 	private Long strategyId;
 	/** 抽奖策略描述信息 **/
 	private String strategyDesc;
+	/** 策略规则模式 **/
+	private String ruleModels;
 	/** 创建时间 **/
 	private Date createTime;
 	/** 更新时间 **/

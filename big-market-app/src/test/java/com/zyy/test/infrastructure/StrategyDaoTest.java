@@ -27,5 +27,13 @@ public class StrategyDaoTest {
 		log.info("测试结果：{}", JSON.toJSONString(strategyList));
 	}
 
+	@Test
+	public void test_queryStrategyByStrategyId() {
+		Strategy strategy = strategyDao.queryStrategyByStrategyId(100001L);
+		log.info("测试结果：{}", JSON.toJSONString(strategy.getStrategyId()));
+		log.info("测试结果：{}", JSON.toJSONString(strategy.getRuleModels()));
+		log.info("测试结果：{}", JSON.toJSONString(strategy.getStrategyDesc()));
+		log.info("测试结果：{}", JSON.toJSONString(strategy));
+	}
 
 }
