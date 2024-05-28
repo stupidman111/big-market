@@ -1,20 +1,21 @@
 
 use `big_market`;
 
+
 DROP TABLE IF EXISTS `strategy_rule`;
 
 CREATE TABLE `strategy_rule` (
-                                 `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-                                 `strategy_id` int(8) NOT NULL COMMENT '抽奖策略ID',
-                                 `award_id` int(8) DEFAULT NULL COMMENT '抽奖奖品ID【规则类型为策略，则不需要奖品ID】',
-                                 `rule_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抽象规则类型；1-策略规则、2-奖品规则',
-                                 `rule_model` varchar(16) NOT NULL COMMENT '抽奖规则类型【rule_random - 随机值计算、rule_lock - 抽奖几次后解锁、rule_luck_award - 幸运奖(兜底奖品)】',
-                                 `rule_value` varchar(256) NOT NULL COMMENT '抽奖规则比值',
-                                 `rule_desc` varchar(128) NOT NULL COMMENT '抽奖规则描述',
-                                 `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                 `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                                 PRIMARY KEY (`id`),
-                                 KEY `idx_strategy_id_award_id` (`strategy_id`,`award_id`)
+ `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+ `strategy_id` int(8) NOT NULL COMMENT '抽奖策略ID',
+ `award_id` int(8) DEFAULT NULL COMMENT '抽奖奖品ID【规则类型为策略，则不需要奖品ID】',
+ `rule_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抽象规则类型；1-策略规则、2-奖品规则',
+ `rule_model` varchar(16) NOT NULL COMMENT '抽奖规则类型【rule_random - 随机值计算、rule_lock - 抽奖几次后解锁、rule_luck_award - 幸运奖(兜底奖品)】',
+ `rule_value` varchar(256) NOT NULL COMMENT '抽奖规则比值',
+ `rule_desc` varchar(128) NOT NULL COMMENT '抽奖规则描述',
+ `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+ `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ KEY `idx_strategy_id_award_id` (`strategy_id`,`award_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `strategy_rule` WRITE;
@@ -35,7 +36,7 @@ VALUES
     (11,100001,105,2,'rule_luck_award','1,50','兜底奖品50以内随机积分','2023-12-09 10:30:43','2023-12-09 12:56:00'),
     (12,100001,106,2,'rule_luck_award','1,60','兜底奖品60以内随机积分','2023-12-09 10:30:43','2023-12-09 12:56:00'),
     (13,100001,NULL,1,'rule_weight','4000:102,103,104,105 5000:102,103,104,105,106,107 6000:102,103,104,105,106,107,108,109','消耗6000分，必中奖范围','2023-12-09 10:30:43','2023-12-31 14:51:50'),
-    (14,100001,NULL,1,'rule_blacklist','1','黑名单抽奖，积分兜底','2023-12-09 12:59:45','2023-12-09 13:42:23');
+    (14,100001,NULL,1,'rule_blacklist','100:user001,user002,user003','黑名单抽奖，积分兜底','2023-12-09 12:59:45','2024-01-06 14:05:34');
 
 /*!40000 ALTER TABLE `strategy_rule` ENABLE KEYS */;
 UNLOCK TABLES;

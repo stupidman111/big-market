@@ -34,4 +34,14 @@ public class StrategyRuleTest {
 		strategyRule = strategyRuleDao.queryStrategyRule(strategyRule);
 		log.info("测试结果：{}", JSON.toJSONString(strategyRule));
 	}
+
+	@Test
+	public void test_queryStrategyRuleValue() {
+		StrategyRule strategyRule = new StrategyRule();
+		strategyRule.setStrategyId(100001L);
+		strategyRule.setAwardId(101);
+		strategyRule.setRuleModel("rule_random");
+		String ruleValue = strategyRuleDao.queryStrategyRuleValue(strategyRule);
+		System.out.println(ruleValue);
+	}
 }

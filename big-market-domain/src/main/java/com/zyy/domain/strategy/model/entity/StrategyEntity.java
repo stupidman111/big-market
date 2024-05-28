@@ -17,7 +17,7 @@ public class StrategyEntity {
 	private Long strategyId;
 	/** 策略描述 **/
 	private String strategyDesc;
-	/** 抽奖规则模型 (rule_weight, rule_blacklist)**/
+	/** 抽奖规则模型 (rule_weight, rule_blacklist) **/
 	private String ruleModels;
 
 	public String[] ruleModels() {

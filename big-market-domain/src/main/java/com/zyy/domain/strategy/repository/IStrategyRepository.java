@@ -28,4 +28,7 @@ public interface IStrategyRepository {
 
 	//获取指定【策略-规则】实体
 	StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleWeight);
+
+	//查询指定strategy_rule的rule_value
+	String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
 }
