@@ -31,4 +31,13 @@ public class StrategyAwardTest {
 		List<StrategyAward> strategyAwards = strategyAwardDao.queryStrategyAwardListByStrategyId(100001L);
 		log.info("测试结果：{}", JSON.toJSONString(strategyAwards));
 	}
+
+	@Test
+	public void test_queryStrategyAwardRuleModels() {
+		StrategyAward strategyAward = new StrategyAward();
+		strategyAward.setStrategyId(100001L);
+		strategyAward.setAwardId(101);
+		String ruleModels = strategyAwardDao.queryStrategyAwardRuleModels(strategyAward);
+		log.info("测试结果：{}", JSON.toJSONString(ruleModels));
+	}
 }

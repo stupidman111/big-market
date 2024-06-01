@@ -4,6 +4,7 @@ package com.zyy.domain.strategy.repository;
 import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.domain.strategy.model.entity.StrategyEntity;
 import com.zyy.domain.strategy.model.entity.StrategyRuleEntity;
+import com.zyy.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,6 @@ public interface IStrategyRepository {
 
 	//查询指定strategy_rule的rule_value
 	String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
+
+	StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId);
 }

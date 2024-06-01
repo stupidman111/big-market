@@ -1,5 +1,6 @@
 package com.zyy.domain.strategy.service.raffle;
 
+import com.zyy.domain.strategy.model.entity.RaffleAwardEntity;
 import com.zyy.domain.strategy.model.entity.RaffleFactorEntity;
 import com.zyy.domain.strategy.model.entity.RuleActionEntity;
 import com.zyy.domain.strategy.model.entity.RuleMatterEntity;
@@ -31,56 +32,82 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
 
 	@Override
 	protected RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> doCheckRaffleBeforeLogic(RaffleFactorEntity raffleFactorEntity, String... logics) {
+		if (logics == null || 0 == logics.length) return RuleActionEntity.<RuleActionEntity.RaffleBeforeEntity>builder()
+				.code(RuleLogicCheckTypeVO.ALLOW.getCode())
+				.info(RuleLogicCheckTypeVO.ALLOW.getInfo())
+				.build();
 
-		//获取所有过滤器
 		Map<String, ILogicFilter<RuleActionEntity.RaffleBeforeEntity>> logicFilterGroup = logicFactory.openLogicFilter();
 
-		//获取黑名单
-		String ruleBlackList = Arrays.stream(logics)
+		// 黑名单规则优先过滤
+		String ruleBackList = Arrays.stream(logics)
 				.filter(str -> str.contains(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode()))
 				.findFirst()
 				.orElse(null);
 
-		if (StringUtils.isNotBlank(ruleBlackList)) {
-			ILogicFilter<RuleActionEntity.RaffleBeforeEntity> blackListLogiccFilter = logicFilterGroup.get(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode());//获取黑名单过滤器
-
+		if (StringUtils.isNotBlank(ruleBackList)) {
+			ILogicFilter<RuleActionEntity.RaffleBeforeEntity> logicFilter = logicFilterGroup.get(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode());
 			RuleMatterEntity ruleMatterEntity = new RuleMatterEntity();
 			ruleMatterEntity.setUserId(raffleFactorEntity.getUserId());
-			ruleMatterEntity.setStrategyId(raffleFactorEntity.getStrategyId());
 			ruleMatterEntity.setAwardId(ruleMatterEntity.getAwardId());
+			ruleMatterEntity.setStrategyId(raffleFactorEntity.getStrategyId());
 			ruleMatterEntity.setRuleModel(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode());
-
-			RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = blackListLogiccFilter.filter(ruleMatterEntity);
-			if (!RuleLogicCheckTypeVO.ALLOW.getCode().equals(ruleActionEntity.getCode())) {//是否被黑名单过滤器接管
+			RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = logicFilter.filter(ruleMatterEntity);
+			if (!RuleLogicCheckTypeVO.ALLOW.getCode().equals(ruleActionEntity.getCode())) {
 				return ruleActionEntity;
 			}
 		}
 
-		//筛选出除了rule_blackList以外的其他规则
+		// 顺序过滤剩余规则
 		List<String> ruleList = Arrays.stream(logics)
 				.filter(s -> !s.equals(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode()))
 				.collect(Collectors.toList());
 
-		//过滤其他规则（比如rule_weight）
 		RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = null;
 		for (String ruleModel : ruleList) {
-			ILogicFilter<RuleActionEntity.RaffleBeforeEntity> logicFilter = logicFilterGroup.get(ruleModel);//根据rule_model获取对应的规则过滤器
+			ILogicFilter<RuleActionEntity.RaffleBeforeEntity> logicFilter = logicFilterGroup.get(ruleModel);
+			RuleMatterEntity ruleMatterEntity = new RuleMatterEntity();
+			ruleMatterEntity.setUserId(raffleFactorEntity.getUserId());
+			ruleMatterEntity.setAwardId(raffleFactorEntity.getAwardId());
+			ruleMatterEntity.setStrategyId(raffleFactorEntity.getStrategyId());
+			ruleMatterEntity.setRuleModel(ruleModel);
+			ruleActionEntity = logicFilter.filter(ruleMatterEntity);
+			// 非放行结果则顺序过滤
+			log.info("抽奖前规则过滤 userId: {} ruleModel: {} code: {} info: {}", raffleFactorEntity.getUserId(), ruleModel, ruleActionEntity.getCode(), ruleActionEntity.getInfo());
+			if (!RuleLogicCheckTypeVO.ALLOW.getCode().equals(ruleActionEntity.getCode())) return ruleActionEntity;
+		}
+
+		return ruleActionEntity;
+	}
+
+	@Override
+	protected RuleActionEntity<RuleActionEntity.RaffleCenterEntity> doCheckRaffleCenterLogic(RaffleFactorEntity raffleFactorEntity, String... logics) {
+		if (logics == null || 0 == logics.length) {
+			return RuleActionEntity.<RuleActionEntity.RaffleCenterEntity>builder()
+					.code(RuleLogicCheckTypeVO.ALLOW.getCode())
+					.info(RuleLogicCheckTypeVO.ALLOW.getInfo())
+					.build();
+		}
+
+		Map<String, ILogicFilter<RuleActionEntity.RaffleCenterEntity>> logicFilterGroup
+				= logicFactory.openLogicFilter();
+
+		RuleActionEntity<RuleActionEntity.RaffleCenterEntity> ruleActionEntity = null;
+		for (String ruleModel : logics) {
+			ILogicFilter<RuleActionEntity.RaffleCenterEntity> logicFilter = logicFilterGroup.get(ruleModel);
 
 			RuleMatterEntity ruleMatterEntity = new RuleMatterEntity();
-
 			ruleMatterEntity.setUserId(raffleFactorEntity.getUserId());
-			ruleMatterEntity.setAwardId(ruleMatterEntity.getAwardId());
 			ruleMatterEntity.setStrategyId(raffleFactorEntity.getStrategyId());
+			ruleMatterEntity.setAwardId(raffleFactorEntity.getAwardId());
 			ruleMatterEntity.setRuleModel(ruleModel);
 
 			ruleActionEntity = logicFilter.filter(ruleMatterEntity);
-
-			log.info("抽奖前规则过滤：userId:{}, ruleModel:{}, code:{}, info:{}",
+			log.info("抽奖中规则过滤 userId: {}, ruleModel: {}, code: {}, info: {}",
 					raffleFactorEntity.getUserId(),
 					ruleModel,
 					ruleActionEntity.getCode(),
 					ruleActionEntity.getInfo());
-
 
 			if (!RuleLogicCheckTypeVO.ALLOW.getCode().equals(ruleActionEntity.getCode())) return ruleActionEntity;
 		}
