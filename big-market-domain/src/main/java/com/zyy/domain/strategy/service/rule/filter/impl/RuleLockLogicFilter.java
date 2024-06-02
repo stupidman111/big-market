@@ -1,4 +1,4 @@
-package com.zyy.domain.strategy.service.rule.impl;
+package com.zyy.domain.strategy.service.rule.filter.impl;
 
 import com.zyy.domain.strategy.model.entity.RuleActionEntity;
 import com.zyy.domain.strategy.model.entity.RuleMatterEntity;
@@ -6,9 +6,8 @@ import com.zyy.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
 import com.zyy.domain.strategy.repository.IStrategyRepository;
 import com.zyy.domain.strategy.service.annotation.LogicStrategy;
 import com.zyy.domain.strategy.service.rule.ILogicFilter;
-import com.zyy.domain.strategy.service.rule.factory.DefaultLogicFactory;
+import com.zyy.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.dom4j.rule.Rule;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
