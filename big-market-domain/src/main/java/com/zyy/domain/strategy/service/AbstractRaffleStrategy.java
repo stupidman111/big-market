@@ -34,14 +34,14 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
 
 	@Override
 	public RaffleAwardEntity performRaffle(RaffleFactorEntity raffleFactorEntity) {
-		// 参数校验
+		// 1. 参数校验
 		String userId = raffleFactorEntity.getUserId();
 		Long strategyId = raffleFactorEntity.getStrategyId();
 		if (null == strategyId || StringUtils.isBlank(userId)) {
 			throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
 		}
 
-		//获取责任链进行抽奖
+		// 2. 获取责任链进行抽奖
 		ILogicChain logicChain = defaultChainFactory.openLogicChain(strategyId);
 		Integer awardId = logicChain.logic(userId, strategyId);
 
@@ -69,6 +69,8 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
 				.build();
 
 	}
+
+	public abstract DefaultChainFactory.
 
 	protected abstract RuleActionEntity<RuleActionEntity.RaffleCenterEntity> doCheckRaffleCenterLogic(
 			RaffleFactorEntity raffleFactorEntity, String... logics);
