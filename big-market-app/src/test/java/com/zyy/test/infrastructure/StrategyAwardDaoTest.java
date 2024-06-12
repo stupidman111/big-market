@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StrategyAwardTest {
+public class StrategyAwardDaoTest {
 
 	@Resource
 	private IStrategyAwardDao strategyAwardDao;

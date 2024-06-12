@@ -2,7 +2,7 @@ package com.zyy.domain.strategy.service.rule.tree.factory.engine.impl;
 
 import com.zyy.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
 import com.zyy.domain.strategy.model.valobj.RuleTreeNodeLineVO;
-import com.zyy.domain.strategy.model.valobj.RuleTreeNodeVo;
+import com.zyy.domain.strategy.model.valobj.RuleTreeNodeVO;
 import com.zyy.domain.strategy.model.valobj.RuleTreeVO;
 import com.zyy.domain.strategy.service.rule.tree.ILogicTreeNode;
 import com.zyy.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
@@ -25,16 +25,16 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
 	}
 
 	@Override
-	public DefaultTreeFactory.StrategyAwardData process(String userId, Long strategyId, Integer awardId) {
+	public DefaultTreeFactory.StrategyAwardVO process(String userId, Long strategyId, Integer awardId) {
 
-		DefaultTreeFactory.StrategyAwardData strategyAwardData = null;
+		DefaultTreeFactory.StrategyAwardVO strategyAwardData = null;
 
 		//获取树根节点、节点集合
 		String curNode = ruleTreeVO.getTreeRootRuleNode();
-		Map<String, RuleTreeNodeVo> treeNodeMap = ruleTreeVO.getTreeNodeMap();
+		Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();
 
 		//遍历节点
-		RuleTreeNodeVo ruleTreeNode = treeNodeMap.get(curNode);
+		RuleTreeNodeVO ruleTreeNode = treeNodeMap.get(curNode);
 		while (null != curNode) {
 			ILogicTreeNode logicTreeNoode = logicTreeNodeGroup.get(ruleTreeNode.getRuleKey());
 			DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNoode.logic(userId, strategyId, awardId);

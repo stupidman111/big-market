@@ -4,6 +4,7 @@ package com.zyy.domain.strategy.repository;
 import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.domain.strategy.model.entity.StrategyEntity;
 import com.zyy.domain.strategy.model.entity.StrategyRuleEntity;
+import com.zyy.domain.strategy.model.valobj.RuleTreeVO;
 import com.zyy.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 
 import java.util.List;
@@ -37,4 +38,6 @@ public interface IStrategyRepository {
 
 
 	StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId);
+
+	RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
 }

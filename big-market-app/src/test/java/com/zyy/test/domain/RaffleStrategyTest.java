@@ -6,7 +6,9 @@ import com.zyy.domain.strategy.model.entity.RaffleAwardEntity;
 import com.zyy.domain.strategy.model.entity.RaffleFactorEntity;
 import com.zyy.domain.strategy.service.IRaffleStrategy;
 import com.zyy.domain.strategy.service.armory.IStrategyArmory;
-import com.zyy.domain.strategy.service.rule.filter.impl.RuleLockLogicFilter;
+import com.zyy.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
+import com.zyy.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
+import com.zyy.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,26 +31,24 @@ public class RaffleStrategyTest {
 	private IRaffleStrategy raffleStrategy;
 
 	@Resource
-	private RuleLockLogicFilter RuleLockLogicFilter;
-
-	@Resource
-	private RuleLockLogicFilter ruleLockLogicFilter;
+	private RuleWeightLogicChain ruleWeightLogicChain;
 
 	@Before
 	public void setUp() {
-		log.info("装配策略：{} - 测试结果：{}", 100001L, strategyArmory.assembleLotteryStrategy(100001L));
-		//log.info("装配策略：{} - 测试结果：{}", 100002L, strategyArmory.assembleLotteryStrategy(100002L));
-		log.info("装配策略：{} - 测试结果：{}", 100003L, strategyArmory.assembleLotteryStrategy(100003L));
+		// 策略装配 100001、100002、100003
+		log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100001L));
+		log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100006L));
+		log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100003L));
 
-		ReflectionTestUtils.setField(RuleLockLogicFilter, "userScore", 40500L);
-		ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 10L);
+		// 通过反射 mock 规则中的值
+		ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 3500L);
 	}
 
 	@Test
 	public void test_performRaffle() {
 		RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
 				.userId("zy")
-				.strategyId(100001L)
+				.strategyId(100006L)
 				.build();
 
 		RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(raffleFactorEntity);

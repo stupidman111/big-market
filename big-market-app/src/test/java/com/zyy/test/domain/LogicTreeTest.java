@@ -26,14 +26,14 @@ public class LogicTreeTest {
 	@Test
 	public void test_tree_rule() {
 		//构建树
-		RuleTreeNodeVo rule_lock = RuleTreeNodeVo.builder()
-				.treeId(100000001)
+		RuleTreeNodeVO rule_lock = RuleTreeNodeVO.builder()
+				.treeId("100000001")
 				.ruleKey("rule_lock")
 				.ruleDesc("限定用户已完成N次抽奖后才解锁")
 				.ruleValue("1")
 				.treeNodeLineVOList(new ArrayList<RuleTreeNodeLineVO>(){{
 					add(RuleTreeNodeLineVO.builder()
-							.treeId(100000001)
+							.treeId("100000001")
 							.ruleNodeFrom("rule_lock")
 							.ruleNodeTo("rule_luck_award")
 							.ruleLimitType(RuleLimitTypeVO.EQUAL)
@@ -41,7 +41,7 @@ public class LogicTreeTest {
 							.build());
 
 					add(RuleTreeNodeLineVO.builder()
-							.treeId(100000001)
+							.treeId("100000001")
 							.ruleNodeFrom("rule_lock")
 							.ruleNodeTo("rule_stock")
 							.ruleLimitType(RuleLimitTypeVO.EQUAL)
@@ -50,22 +50,22 @@ public class LogicTreeTest {
 				}})
 				.build();
 
-		RuleTreeNodeVo rule_luck_award = RuleTreeNodeVo.builder()
-				.treeId(100000001)
+		RuleTreeNodeVO rule_luck_award = RuleTreeNodeVO.builder()
+				.treeId("100000001")
 				.ruleKey("rule_luck_award")
 				.ruleDesc("幸运奖")
 				.ruleValue("1")
 				.treeNodeLineVOList(null)
 				.build();
 
-		RuleTreeNodeVo rule_stock = RuleTreeNodeVo.builder()
-				.treeId(100000001)
+		RuleTreeNodeVO rule_stock = RuleTreeNodeVO.builder()
+				.treeId("100000001")
 				.ruleKey("rule_stock")
 				.ruleDesc("库存校验")
 				.ruleValue(null)
 				.treeNodeLineVOList(new ArrayList<RuleTreeNodeLineVO>(){{
 					add(RuleTreeNodeLineVO.builder()
-							.treeId(100000001)
+							.treeId("100000001")
 							.ruleNodeFrom("rule_stock")
 							.ruleNodeTo("rule_luck_award")
 							.ruleLimitType(RuleLimitTypeVO.EQUAL)
@@ -76,12 +76,12 @@ public class LogicTreeTest {
 
 		//构建决策树
 		RuleTreeVO ruleTreeVO = new RuleTreeVO();
-		ruleTreeVO.setTreeId(100000001);
+		ruleTreeVO.setTreeId("100000001");
 		ruleTreeVO.setTreeName("决策树规则；增加dall-e-3画图模型");
 		ruleTreeVO.setTreeDesc("决策树规则；增加dall-e-3画图模型");
 		ruleTreeVO.setTreeRootRuleNode("rule_lock");
 
-		ruleTreeVO.setTreeNodeMap(new HashMap<String, RuleTreeNodeVo>() {{
+		ruleTreeVO.setTreeNodeMap(new HashMap<String, RuleTreeNodeVO>() {{
 			put("rule_lock", rule_lock);
 			put("rule_stock", rule_stock);
 			put("rule_luck_award", rule_luck_award);
@@ -89,9 +89,9 @@ public class LogicTreeTest {
 
 		IDecisionTreeEngine treeEngine = defaultTreeFactory.openlogicTree(ruleTreeVO);
 
-		DefaultTreeFactory.StrategyAwardData strategyAwardData = treeEngine.process("zy", 100001L, 100);
+		DefaultTreeFactory.StrategyAwardVO strategyAwardVO = treeEngine.process("zy", 100001L, 100);
 
-		log.info("测试结果: {}", JSON.toJSONString(strategyAwardData));
+		log.info("测试结果: {}", JSON.toJSONString(strategyAwardVO));
 	}
 
 }

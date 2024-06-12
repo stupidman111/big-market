@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StrategyRuleTest {
+public class StrategyRuleDaoTest {
 
 	@Resource
 	private IStrategyRuleDao strategyRuleDao;

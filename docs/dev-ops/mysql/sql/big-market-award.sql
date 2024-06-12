@@ -4,8 +4,6 @@ USE big_market;
 
 DROP TABLE IF EXISTS `award`;
 
-DROP TABLE IF EXISTS `award`;
-
 CREATE TABLE `award` (
                          `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
                          `award_id` int(8) NOT NULL COMMENT '抽奖奖品ID - 内部流转使用',
