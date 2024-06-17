@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
+public abstract class AbstractRaffleStrategy implements IRaffleStrategy, IRaffleStock {
 
 	protected IStrategyRepository repository;
 
@@ -43,7 +43,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
 
 		// 2. 获取责任链进行抽奖（拿到的是初步抽奖奖品的信息，黑名单、权重抽奖直接返回结果，默认抽奖的结果需要进行规则树判断）
 		DefaultChainFactory.StrategyAwardVO chainStrategyAwardVO = raffleLogicChain(userId, strategyId);
-		log.info("抽奖策略计算-责任链 {} {} {} {}", userId, strategyId, chainStrategyAwardVO.getAwardId(), chainStrategyAwardVO.getLogicModel());
+		log.info("抽奖策略计算-责任链 userId:{}, strategtId:{}, awardId:{}, rule_models: {}", userId, strategyId, chainStrategyAwardVO.getAwardId(), chainStrategyAwardVO.getLogicModel());
 		if (!DefaultChainFactory.LogicModel.RULE_DEFAULT.getCode().equals(chainStrategyAwardVO.getLogicModel())) {
 			return RaffleAwardEntity.builder()
 					.awardId(chainStrategyAwardVO.getAwardId())

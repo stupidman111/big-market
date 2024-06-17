@@ -1,21 +1,19 @@
-
-use `big_market`;
-
+USE big_market;
 
 DROP TABLE IF EXISTS `strategy_rule`;
 
 CREATE TABLE `strategy_rule` (
-                                 `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-                                 `strategy_id` int(8) NOT NULL COMMENT '抽奖策略ID',
-                                 `award_id` int(8) DEFAULT NULL COMMENT '抽奖奖品ID【规则类型为策略，则不需要奖品ID】',
-                                 `rule_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抽象规则类型；1-策略规则、2-奖品规则',
-                                 `rule_model` varchar(16) NOT NULL COMMENT '抽奖规则类型【rule_random - 随机值计算、rule_lock - 抽奖几次后解锁、rule_luck_award - 幸运奖(兜底奖品)】',
-                                 `rule_value` varchar(256) NOT NULL COMMENT '抽奖规则比值',
-                                 `rule_desc` varchar(128) NOT NULL COMMENT '抽奖规则描述',
-                                 `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                 `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                                 PRIMARY KEY (`id`),
-                                 KEY `idx_strategy_id_award_id` (`strategy_id`,`award_id`)
+    `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+    `strategy_id` int(8) NOT NULL COMMENT '抽奖策略ID',
+    `award_id` int(8) DEFAULT NULL COMMENT '抽奖奖品ID【规则类型为策略，则不需要奖品ID】',
+    `rule_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抽象规则类型；1-策略规则、2-奖品规则',
+    `rule_model` varchar(16) NOT NULL COMMENT '抽奖规则类型【rule_random - 随机值计算、rule_lock - 抽奖几次后解锁、rule_luck_award - 幸运奖(兜底奖品)】',
+    `rule_value` varchar(256) NOT NULL COMMENT '抽奖规则比值',
+    `rule_desc` varchar(128) NOT NULL COMMENT '抽奖规则描述',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_strategy_id_award_id` (`strategy_id`,`award_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `strategy_rule` WRITE;

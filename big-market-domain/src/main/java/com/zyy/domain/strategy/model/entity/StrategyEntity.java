@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StrategyEntity {
-
 	/** 策略ID **/
 	private Long strategyId;
 	/** 策略描述 **/

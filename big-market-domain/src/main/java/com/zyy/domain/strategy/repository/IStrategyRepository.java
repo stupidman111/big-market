@@ -6,6 +6,7 @@ import com.zyy.domain.strategy.model.entity.StrategyEntity;
 import com.zyy.domain.strategy.model.entity.StrategyRuleEntity;
 import com.zyy.domain.strategy.model.valobj.RuleTreeVO;
 import com.zyy.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
+import com.zyy.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,22 @@ public interface IStrategyRepository {
 
 	String queryStrategyRuleValue(Long strategyId, String ruleModel);
 
-
 	StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId);
 
 	RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
+
+	//缓存奖品库存
+	void cacheStrategyAwardCount(String cacheKey, Integer awardCount);
+
+	//缓存key，decr方式扣减库存
+	Boolean subtractionAwardStock(String cacheKey);
+
+	//写入奖品库存消费队列
+	void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
+
+	//获取奖品库存消费队列
+	StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException;
+
+	//更新奖品库存消耗
+	void updateStrategyAwardStock(Long strategyId, Integer awardId);
 }

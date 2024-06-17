@@ -50,6 +50,20 @@ public interface IRedisService {
 	<T> RDelayedQueue<T> getDelayedQueue(RBlockingQueue<T> rBlockingQueue);
 
 	/**
+	 * 原子操作设置值
+	 * @param key
+	 * @param value
+	 */
+	void setAtomicLong(String key, long value);
+
+	/**
+	 * 原子操作获取值
+	 * @param key
+	 * @return
+	 */
+	Long getAtomicLong(String key);
+
+	/**
 	 * 自增 Key 的值；1、2、3、4
 	 *
 	 * @param key 键
@@ -233,4 +247,11 @@ public interface IRedisService {
 	 * @return 返回结果
 	 */
 	<T> RBloomFilter<T> getBloomFilter(String key);
+
+	/**
+	 * key不存在时加入
+	 * @param key
+	 * @return
+	 */
+	Boolean setNx(String key);
 }

@@ -37,11 +37,12 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
 		RuleTreeNodeVO ruleTreeNode = treeNodeMap.get(curNode);
 		while (null != curNode) {
 			ILogicTreeNode logicTreeNoode = logicTreeNodeGroup.get(ruleTreeNode.getRuleKey());
-			DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNoode.logic(userId, strategyId, awardId);
+			String ruleValue = ruleTreeNode.getRuleValue();
 
-			strategyAwardData = logicEntity.getStrategyAwardData();
-
+			DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNoode.logic(userId, strategyId, awardId, ruleValue);
 			RuleLogicCheckTypeVO ruleLogicCheckType = logicEntity.getRuleLogicCheckType();
+			strategyAwardData = logicEntity.getStrategyAwardVO();
+
 			log.info("决策树引擎【{}】 treeId: {}, node: {}, code: {}",
 					ruleTreeVO.getTreeName(),
 					ruleTreeVO.getTreeId(),
@@ -58,16 +59,14 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
 		return strategyAwardData;
 	}
 
-	public String nextNode(String matterValue, List<RuleTreeNodeLineVO> ruleTreeNodeLineVOList) {
-		if (null == ruleTreeNodeLineVOList || ruleTreeNodeLineVOList.isEmpty()) return null;
-
-		for (RuleTreeNodeLineVO ruleTreeNodeLineVO : ruleTreeNodeLineVOList) {
-			if (decisionLogic(matterValue, ruleTreeNodeLineVO)) {
-				return ruleTreeNodeLineVO.getRuleNodeTo();
+	public String nextNode(String matterValue, List<RuleTreeNodeLineVO> treeNodeLineVOList) {
+		if (null == treeNodeLineVOList || treeNodeLineVOList.isEmpty()) return null;
+		for (RuleTreeNodeLineVO nodeLine : treeNodeLineVOList) {
+			if (decisionLogic(matterValue, nodeLine)) {
+				return nodeLine.getRuleNodeTo();
 			}
 		}
-
-		throw new RuntimeException();
+		return null;
  	}
 
 	 public boolean decisionLogic(String matterValue, RuleTreeNodeLineVO nodeLine) {

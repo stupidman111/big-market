@@ -28,4 +28,10 @@ public class RepositoryTest {
 
 		//log.info("查询结果：{}", ruleTreeVO);
 	}
+
+	//void updateStrategyAwardStock(Long strategyId, Integer awardId);
+	@Test
+	public void test_updateStrategyAwardStock() {
+		repository.updateStrategyAwardStock(100001L, 101);
+	}
 }

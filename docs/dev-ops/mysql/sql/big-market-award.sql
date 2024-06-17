@@ -5,14 +5,14 @@ USE big_market;
 DROP TABLE IF EXISTS `award`;
 
 CREATE TABLE `award` (
-                         `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-                         `award_id` int(8) NOT NULL COMMENT '抽奖奖品ID - 内部流转使用',
-                         `award_key` varchar(32) NOT NULL COMMENT '奖品对接标识 - 每一个都是一个对应的发奖策略',
-                         `award_config` varchar(32) NOT NULL COMMENT '奖品配置信息',
-                         `award_desc` varchar(128) NOT NULL COMMENT '奖品内容描述',
-                         `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                         `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                         PRIMARY KEY (`id`)
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+    `award_id` int(8) NOT NULL COMMENT '抽奖奖品ID - 内部流转使用',
+    `award_key` varchar(32) NOT NULL COMMENT '奖品对接标识 - 每一个都是一个对应的发奖策略',
+    `award_config` varchar(32) NOT NULL COMMENT '奖品配置信息',
+    `award_desc` varchar(128) NOT NULL COMMENT '奖品内容描述',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `award` WRITE;

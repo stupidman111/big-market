@@ -40,4 +40,13 @@ public class StrategyAwardDaoTest {
 		String ruleModels = strategyAwardDao.queryStrategyAwardRuleModels(strategyAward);
 		log.info("测试结果：{}", JSON.toJSONString(ruleModels));
 	}
+
+	@Test
+	public void test_updateStrategyAwardStock() {
+		StrategyAward strategyAward = new StrategyAward();
+		strategyAward.setStrategyId(100001L);
+		strategyAward.setAwardId(101);
+		strategyAwardDao.updateStrategyAwardStock(strategyAward);
+
+	}
 }
