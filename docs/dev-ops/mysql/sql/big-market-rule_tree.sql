@@ -21,7 +21,9 @@ LOCK TABLES `rule_tree` WRITE;
 
 INSERT INTO `rule_tree` (`id`, `tree_id`, `tree_name`, `tree_desc`, `tree_node_rule_key`, `create_time`, `update_time`)
 VALUES
-    (1,'tree_lock','规则树','规则树','rule_lock','2024-01-27 10:01:59','2024-02-03 10:39:54');
+    (1,'tree_lock_1','规则树','规则树','rule_lock','2024-01-27 10:01:59','2024-02-15 07:49:59'),
+    (2,'tree_luck_award','规则树-兜底奖励','规则树-兜底奖励','rule_stock','2024-02-15 07:35:06','2024-02-15 07:50:20'),
+    (3,'tree_lock_2','规则树','规则树','rule_lock','2024-01-27 10:01:59','2024-02-15 07:49:59');
 
 /*!40000 ALTER TABLE `rule_tree` ENABLE KEYS */;
 UNLOCK TABLES;

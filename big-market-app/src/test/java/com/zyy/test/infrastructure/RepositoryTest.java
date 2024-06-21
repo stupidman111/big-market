@@ -1,5 +1,7 @@
 package com.zyy.test.infrastructure;
 
+import com.alibaba.fastjson.JSON;
+import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.domain.strategy.model.valobj.RuleTreeVO;
 import com.zyy.domain.strategy.repository.IStrategyRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -33,5 +36,14 @@ public class RepositoryTest {
 	@Test
 	public void test_updateStrategyAwardStock() {
 		repository.updateStrategyAwardStock(100001L, 101);
+	}
+
+
+	@Test
+	public void test_queryStrategyAwardList() {
+		List<StrategyAwardEntity> strategyAwardEntities = repository.queryStrategyAwardList(100001L);
+		for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
+			log.info("ans: {}\n", JSON.toJSONString(strategyAwardEntity));
+		}
 	}
 }

@@ -19,9 +19,13 @@ LOCK TABLES `rule_tree_node_line` WRITE;
 
 INSERT INTO `rule_tree_node_line` (`id`, `tree_id`, `rule_node_from`, `rule_node_to`, `rule_limit_type`, `rule_limit_value`, `create_time`, `update_time`)
 VALUES
-    (1,'tree_lock','rule_lock','rule_stock','EQUAL','ALLOW','2024-02-03 10:40:25','2024-02-03 10:40:25'),
-    (2,'tree_lock','rule_lock','rule_luck_award','EQUAL','TAKE_OVER','2024-02-03 10:40:26','2024-02-03 10:40:26'),
-    (3,'tree_lock','rule_stock','rule_luck_award','EQUAL','TAKE_OVER','2024-02-03 10:40:27','2024-02-03 10:40:27');
+    (1,'tree_lock_1','rule_lock','rule_stock','EQUAL','ALLOW','2024-02-15 07:37:31','2024-02-15 07:55:08'),
+    (2,'tree_lock_1','rule_lock','rule_luck_award','EQUAL','TAKE_OVER','2024-02-15 07:37:31','2024-02-15 07:55:11'),
+    (3,'tree_lock_1','rule_stock','rule_luck_award','EQUAL','ALLOW','2024-02-15 07:37:31','2024-02-15 07:55:13'),
+    (4,'tree_luck_award','rule_stock','rule_luck_award','EQUAL','ALLOW','2024-02-15 07:37:31','2024-02-15 07:39:28'),
+    (5,'tree_lock_2','rule_lock','rule_stock','EQUAL','ALLOW','2024-02-15 07:37:31','2024-02-15 07:55:08'),
+    (6,'tree_lock_2','rule_lock','rule_luck_award','EQUAL','TAKE_OVER','2024-02-15 07:37:31','2024-02-15 07:55:11'),
+    (7,'tree_lock_2','rule_stock','rule_luck_award','EQUAL','ALLOW','2024-02-15 07:37:31','2024-02-15 07:55:13');
 
 /*!40000 ALTER TABLE `rule_tree_node_line` ENABLE KEYS */;
 UNLOCK TABLES;

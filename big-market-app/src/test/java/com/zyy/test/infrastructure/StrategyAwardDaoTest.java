@@ -1,6 +1,7 @@
 package com.zyy.test.infrastructure;
 
 import com.alibaba.fastjson.JSON;
+import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.infrastructure.persistent.dao.IStrategyAwardDao;
 import com.zyy.infrastructure.persistent.po.StrategyAward;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +49,15 @@ public class StrategyAwardDaoTest {
 		strategyAward.setAwardId(101);
 		strategyAwardDao.updateStrategyAwardStock(strategyAward);
 
+	}
+
+	@Test
+	public void test_queryStrategyAward() {
+		StrategyAward strategyAward = new StrategyAward();
+		strategyAward.setStrategyId(100001L);
+		strategyAward.setAwardId(101);
+
+		StrategyAward strategyAwardRes = strategyAwardDao.queryStrategyAward(strategyAward);
+		log.info("{}", JSON.toJSONString(strategyAwardRes));
 	}
 }

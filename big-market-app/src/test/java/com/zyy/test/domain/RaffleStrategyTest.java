@@ -4,7 +4,9 @@ package com.zyy.test.domain;
 import com.alibaba.fastjson.JSON;
 import com.zyy.domain.strategy.model.entity.RaffleAwardEntity;
 import com.zyy.domain.strategy.model.entity.RaffleFactorEntity;
+import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
+import com.zyy.domain.strategy.service.IRaffleAward;
 import com.zyy.domain.strategy.service.IRaffleStock;
 import com.zyy.domain.strategy.service.IRaffleStrategy;
 import com.zyy.domain.strategy.service.armory.IStrategyArmory;
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 @Slf4j
@@ -101,5 +104,16 @@ public class RaffleStrategyTest {
 		RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(raffleFactorEntity);
 		log.info("请求参数：{}", JSON.toJSONString(raffleFactorEntity));
 		log.info("测试结果：{}", JSON.toJSONString(raffleAwardEntity));
+	}
+
+	@Resource
+	private IRaffleAward raffleAward;
+
+	@Test
+	public void test_queryRaffleStrategyAwardList() {
+		List<StrategyAwardEntity> strategyAwardEntities = raffleAward.queryRaffleStrategyAwardList(100006L);
+		for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
+			log.info("ans: {}\n", strategyAwardEntity);
+		}
 	}
 }

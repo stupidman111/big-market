@@ -55,4 +55,6 @@ public interface IStrategyRepository {
 
 	//更新奖品库存消耗
 	void updateStrategyAwardStock(Long strategyId, Integer awardId);
+
+	StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId);
 }
