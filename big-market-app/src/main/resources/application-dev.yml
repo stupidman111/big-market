@@ -1,6 +1,10 @@
 server:
   port: 8091
-
+  tomcat:
+    threads:
+      max: 200        # 设定处理客户请求的线程的最大数目，决定了服务器可以同时响应客户请求的数,默认200
+      min-spare: 50   # 初始化线程数,最小空闲线程数,默认是10
+    accept-count: 10  # 等待队列长度
 
 # 应用配置
 app:
@@ -25,8 +29,8 @@ thread:
 spring:
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1:13339/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
   hikari:
     pool-name: Retail_HikariCP
@@ -49,12 +53,12 @@ redis:
   sdk:
     config:
       host: 127.0.0.1
-      port: 16380
+      port: 16379
       pool-size: 10
       min-idle-size: 5
       idle-timeout: 30000
       connect-timeout: 5000
-      retry-attemptsp: 3
+      retry-attempts: 3
       retry-interval: 1000
       ping-interval: 60000
       keep-alive: true
