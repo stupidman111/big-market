@@ -1,35 +1,60 @@
 package com.zyy.domain.activity.service;
 
-import com.alibaba.fastjson.JSON;
-import com.zyy.domain.activity.model.entity.*;
+import com.zyy.domain.activity.model.aggregate.CreateOrderAggregate;
+import com.zyy.domain.activity.model.entity.ActivityCountEntity;
+import com.zyy.domain.activity.model.entity.ActivityEntity;
+import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
+import com.zyy.domain.activity.model.entity.SkuRechargeEntity;
 import com.zyy.domain.activity.repository.IActivityRepository;
+import com.zyy.domain.activity.service.rule.IActionChain;
+import com.zyy.domain.activity.service.rule.factory.DefaultActionChainFactory;
+import com.zyy.types.enums.ResponseCode;
+import com.zyy.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-public class AbstractRaffleActivity implements IRaffleOrder{
+public abstract class AbstractRaffleActivity extends RaffleActivitySupport implements IRaffleOrder {
 
-	protected IActivityRepository activityRepository;
 
-	public AbstractRaffleActivity(IActivityRepository activityRepository) {
-		this.activityRepository = activityRepository;
+	public AbstractRaffleActivity(DefaultActionChainFactory defaultActivityFactoryChain, IActivityRepository activityRepository) {
+		super(defaultActivityFactoryChain, activityRepository);
 	}
+
 	@Override
-	public ActivityOrderEntity createRaffleActivityOrder(ActivityShopCartEntity activityShopCartEntity) {
+	public String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity) {
+		//1.参数校验
+		String userId = skuRechargeEntity.getUserId();
+		Long sku = skuRechargeEntity.getSku();
+		String outBusinessNo = skuRechargeEntity.getOutBusinessNo();
+		if (null == sku || StringUtils.isBlank(userId) || StringUtils.isBlank(outBusinessNo)) {
+			throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+		}
 
-		//1. 根据 activityShopCartEntity - sku 获取 ActivitySkuEntity
-		ActivitySkuEntity activitySkuEntity = activityRepository.queryActivitySku(activityShopCartEntity.getSku());
+		//2.获取信息
+		ActivitySkuEntity activitySkuEntity = queryActivitySku(sku);
+		ActivityEntity activityEntity = queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
+		ActivityCountEntity activityCountEntity = queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
 
-		//2. 根据 ActivitySkuEntity 获取 ActivityEntity
-		ActivityEntity activityEntity = activityRepository.queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
+		//3.活动动作规则校验
+		IActionChain actionChain = defaultActivityFactoryChain.openActionChain();
+		boolean success = actionChain.action(activitySkuEntity, activityEntity, activityCountEntity);
 
-		//3. 根据 ActivityEntity 获取 ActivityCountEntity
-		ActivityCountEntity activityCountEntity = activityRepository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
+		//4.构建订单聚合对象
+		CreateOrderAggregate createOrderAggregate = buildOrderAggregate(skuRechargeEntity, activitySkuEntity, activityEntity, activityCountEntity);
 
-		log.info("查询结果: sku信息：\n {},\n {},\n {}\n", JSON.toJSONString(activitySkuEntity),
-				JSON.toJSONString(activityEntity),
-				JSON.toJSONString(activityCountEntity));
+		//5.保存订单（）
+		doSaveOrder(createOrderAggregate);
 
-
-		return ActivityOrderEntity.builder().build();
+		//6.返回单号
+		return createOrderAggregate.getActivityOrderEntity().getOrderId();
 	}
+
+	protected abstract CreateOrderAggregate buildOrderAggregate(SkuRechargeEntity skuRechargeEntity,
+																ActivitySkuEntity activitySkuEntity,
+																ActivityEntity activityEntity,
+																ActivityCountEntity activityCountEntity);
+
+	protected abstract void doSaveOrder(CreateOrderAggregate createOrderAggregate);
+
 }

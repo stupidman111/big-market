@@ -15,8 +15,8 @@ import java.util.Date;
 public class ActivityOrderEntity {
 	/** 用户 ID **/
 	private String userId;
-//	/** sku **/
-//	private Long sku;
+	/** sku **/
+	private Long sku;
 	/** 活动 ID **/
 	private Long activityId;
 	/** 活动名称 **/
@@ -35,4 +35,6 @@ public class ActivityOrderEntity {
 	private Integer dayCount;
 	/** 订单状态 **/
 	private OrderStateVO state;
+	/** 业务 ID **/
+	private String outBusinessNO;
 }

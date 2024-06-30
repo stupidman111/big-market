@@ -25,7 +25,8 @@ CREATE TABLE `raffle_activity_order` (
     `total_count` int(8) NOT NULL COMMENT '总次数',
     `day_count` int(8) NOT NULL COMMENT '日次数',
     `month_count` int(8) NOT NULL COMMENT '月次数',
-    `state` varchar(8) NOT NULL DEFAULT 'complete' COMMENT '订单状态（complete）',
+    `state` varchar(22) NOT NULL DEFAULT 'complete' COMMENT '订单状态（complete）',
+    `out_business_no` varchar(64) NOT NULL COMMENT '业务防重ID - 外部透传的，确保幂等',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -36,10 +37,10 @@ CREATE TABLE `raffle_activity_order` (
 LOCK TABLES `raffle_activity_order` WRITE;
 /*!40000 ALTER TABLE `raffle_activity_order` DISABLE KEYS */;
 
-INSERT INTO `raffle_activity_order` (`id`, `user_id`, `sku`, `activity_id`, `activity_name`, `strategy_id`, `order_id`, `order_time`, `total_count`, `day_count`, `month_count`, `state`, `create_time`, `update_time`)
+INSERT INTO `raffle_activity_order` (`id`, `user_id`, `sku`, `activity_id`, `activity_name`, `strategy_id`, `order_id`, `order_time`, `total_count`, `day_count`, `month_count`, `state`, `out_business_no`, `create_time`, `update_time`)
 VALUES
-    (1,'ODRhfGEfX',0,100301,'测试活动',100006,'826130522615','2024-03-09 06:26:20',0,0,0,'not_used','2024-03-09 14:26:19','2024-03-09 14:26:19'),
-    (2,'IoTtOmcBeivNUYv',0,100301,'测试活动',100006,'469450480489','2024-03-09 06:26:20',0,0,0,'not_used','2024-03-09 14:26:20','2024-03-09 14:26:20');
+
+    (3,'zy',9011,100301,'测试活动',100006,'383240888158','2024-03-23 04:38:23',1,1,1,'completed','700091009111','2024-03-23 12:38:23','2024-03-23 12:38:23');
 
 /*!40000 ALTER TABLE `raffle_activity_order` ENABLE KEYS */;
 UNLOCK TABLES;

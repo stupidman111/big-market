@@ -1,5 +1,6 @@
 package com.zyy.domain.activity.repository;
 
+import com.zyy.domain.activity.model.aggregate.CreateOrderAggregate;
 import com.zyy.domain.activity.model.entity.ActivityCountEntity;
 import com.zyy.domain.activity.model.entity.ActivityEntity;
 import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
@@ -27,4 +28,9 @@ public interface IActivityRepository {
 	 */
 	ActivityCountEntity queryRaffleActivityCountByActivityCountId(Long activityCountId);
 
+	/**
+	 * 处理订单
+	 * @param createOrderAggregate
+	 */
+	void doSaveOrder(CreateOrderAggregate createOrderAggregate);
 }

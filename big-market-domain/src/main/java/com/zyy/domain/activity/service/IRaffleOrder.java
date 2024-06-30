@@ -1,10 +1,9 @@
 package com.zyy.domain.activity.service;
 
 
-import com.zyy.domain.activity.model.entity.ActivityOrderEntity;
-import com.zyy.domain.activity.model.entity.ActivityShopCartEntity;
+import com.zyy.domain.activity.model.entity.SkuRechargeEntity;
 
 public interface IRaffleOrder {
 
-	ActivityOrderEntity createRaffleActivityOrder(ActivityShopCartEntity activityShopCartEntity);
+	String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
 }
