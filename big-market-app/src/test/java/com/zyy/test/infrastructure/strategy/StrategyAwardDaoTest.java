@@ -1,7 +1,6 @@
-package com.zyy.test.infrastructure;
+package com.zyy.test.infrastructure.strategy;
 
 import com.alibaba.fastjson.JSON;
-import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.infrastructure.persistent.dao.IStrategyAwardDao;
 import com.zyy.infrastructure.persistent.po.StrategyAward;
 import lombok.extern.slf4j.Slf4j;

@@ -10,25 +10,31 @@ CREATE database if NOT EXISTS `big_market` default character set utf8mb4 collate
 
 USE big_market;
 
-DROP TABLE IF EXISTS `raffle_activity_account_flow`;
+DROP TABLE IF EXISTS `raffle_activity_sku`;
 
-CREATE TABLE `raffle_activity_account_flow`(
+CREATE TABLE `raffle_activity_sku` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-    `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+    `sku` bigint(12) NOT NULL COMMENT '商品sku - 把每一个组合当做一个商品',
     `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
-    `total_count` int(8) NOT NULL COMMENT '总次数',
-    `day_count` int(8) NOT NULL COMMENT '日次数',
-    `month_count` int(8) NOT NULL COMMENT '月次数',
-    `flow_id` varchar(32) NOT NULL COMMENT '流水ID - 生成的唯一ID',
-    `flow_channel` varchar(12) NOT NULL DEFAULT 'activity' COMMENT '流水渠道（activity-活动领取、sale-购买、redeem-兑换、free-免费赠送）',
-    `biz_id` varchar(12) NOT NULL COMMENT '业务ID（外部透传，活动ID、订单ID）',
+    `activity_count_id` bigint(12) NOT NULL COMMENT '活动个人参与次数ID',
+    `stock_count` int(11) NOT NULL COMMENT '商品库存',
+    `stock_count_surplus` int(11) NOT NULL COMMENT '剩余库存',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uq_flow_id` (`flow_id`),
-    UNIQUE KEY `uq_biz_id` (`biz_id`),
-    KEY `idx_user_id_activity_id` (`user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动账户流水表';
+    UNIQUE KEY `uq_sku` (`sku`),
+    KEY `idx_activity_id_activity_count_id` (`activity_id`,`activity_count_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `raffle_activity_sku` WRITE;
+/*!40000 ALTER TABLE `raffle_activity_sku` DISABLE KEYS */;
+
+INSERT INTO `raffle_activity_sku` (`id`, `sku`, `activity_id`, `activity_count_id`, `stock_count`, `stock_count_surplus`, `create_time`, `update_time`)
+VALUES
+    (1,9011,100301,11101,0,0,'2024-03-16 11:41:09','2024-03-16 11:59:21');
+
+/*!40000 ALTER TABLE `raffle_activity_sku` ENABLE KEYS */;
+UNLOCK TABLES;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

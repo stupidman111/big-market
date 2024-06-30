@@ -1,18 +1,22 @@
-package com.zyy.infrastructure.persistent.po;
+package com.zyy.domain.activity.model.entity;
 
+import com.zyy.domain.activity.model.valobj.OrderStateVO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-public class RaffleActivityOrder {
-
-	/** 自增 ID **/
-	private Long id;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ActivityOrderEntity {
 	/** 用户 ID **/
 	private String userId;
-	/** sku **/
-	private Long sku;
+//	/** sku **/
+//	private Long sku;
 	/** 活动 ID **/
 	private Long activityId;
 	/** 活动名称 **/
@@ -30,9 +34,5 @@ public class RaffleActivityOrder {
 	/** 日次数 **/
 	private Integer dayCount;
 	/** 订单状态 **/
-	private String state;
-	/** 创建时间 **/
-	private Date createTime;
-	/** 更新时间 **/
-	private Date updateTime;
+	private OrderStateVO state;
 }

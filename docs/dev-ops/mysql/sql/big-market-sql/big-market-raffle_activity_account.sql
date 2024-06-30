@@ -12,6 +12,7 @@ USE big_market;
 
 DROP TABLE IF EXISTS `raffle_activity_account`;
 
+/********* 抽奖活动账户表 *********/
 CREATE TABLE `raffle_activity_account`(
     `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
     `user_id` varchar(32) NOT NULL COMMENT '用户ID',
@@ -27,6 +28,8 @@ CREATE TABLE `raffle_activity_account`(
     PRIMARY KEY (`id`),
     UNIQUE KEY `uq_user_id_activity_id` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动账户表';
+
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

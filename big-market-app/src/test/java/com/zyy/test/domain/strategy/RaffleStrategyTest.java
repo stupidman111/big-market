@@ -1,4 +1,4 @@
-package com.zyy.test.domain;
+package com.zyy.test.domain.strategy;
 
 
 import com.alibaba.fastjson.JSON;
@@ -10,9 +10,7 @@ import com.zyy.domain.strategy.service.IRaffleAward;
 import com.zyy.domain.strategy.service.IRaffleStock;
 import com.zyy.domain.strategy.service.IRaffleStrategy;
 import com.zyy.domain.strategy.service.armory.IStrategyArmory;
-import com.zyy.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import com.zyy.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
-import com.zyy.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import com.zyy.domain.strategy.service.rule.tree.impl.RuleLockLogicTreeNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
