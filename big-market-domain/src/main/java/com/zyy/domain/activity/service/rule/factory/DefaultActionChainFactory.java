@@ -18,7 +18,7 @@ public class DefaultActionChainFactory {
 	 */
 	public DefaultActionChainFactory(Map<String, IActionChain> actionChainGroup) {
 		actionChain = actionChainGroup.get(ActionModel.activity_base_action.code);
-		//IActionChain iActionChain = actionChainGroup.get(ActionModel.activity_sku_stock_action.getCode());
+
 		actionChain.appendNext(actionChainGroup.get(ActionModel.activity_sku_stock_action.getCode()));
 	}
 

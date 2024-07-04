@@ -25,9 +25,9 @@ thread:
         block-queue-size: 5000
         policy: CallerRunsPolicy
 
-# 数据库配置；启动时配置数据库资源信息
+
 spring:
-  datasource:
+  datasource: # 数据库配置；启动时配置数据库资源信息
     username: root
     password: 123456
     url: jdbc:mysql://127.0.0.1:13306/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
@@ -42,6 +42,19 @@ spring:
     connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
     connection-test-query: SELECT 1
   type: com.zaxxer.hikari.HikariDataSource
+  rabbitmq: # MQ配置
+    addresses: 127.0.0.1
+    port: 5672
+    #virtual-host: /
+    username: guest
+    password: guest
+    listener: # 消费者
+      simple:
+        prefetch: 1
+    topic:
+      activity_sku_stock_zero: activity_sku_stock_zero
+
+
 
 # orm配置
 mybatis:

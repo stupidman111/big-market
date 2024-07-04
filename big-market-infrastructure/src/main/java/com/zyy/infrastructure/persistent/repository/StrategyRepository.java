@@ -166,53 +166,7 @@ public class StrategyRepository implements IStrategyRepository {
 
 	@Override
 	public RuleTreeVO queryRuleTreeVOByTreeId(String treeId) {
-//		// 优先从缓存中获取
-//		String cacheKey = Constants.RedisKey.RULE_TREE_VO_KEY + treeId;
-//		RuleTreeVO ruleTreeVO = redisService.getValue(cacheKey);
-//		if (null != ruleTreeVO) return ruleTreeVO;
-//
-//		// 缓存查不到再走库
-//		RuleTree ruleTree = ruleTreeDao.queryRuleTreeByTreeId(treeId);
-//		List<RuleTreeNode> ruleTreeNodes = ruleTreeNodeDao.queryRuleTreeNodeListByTreeId(treeId);
-//		List<RuleTreeNodeLine> ruleTreeNodeLines = ruleTreeNodeLineDao.queryRuleTreeNodeLineListByTreeId(treeId);
-//
-//		Map<String, List<RuleTreeNodeLineVO>> ruleTreeNodeLineMap = new HashMap<>();
-//		for (RuleTreeNodeLine ruleTreeNodeLine : ruleTreeNodeLines) {
-//			RuleTreeNodeLineVO ruleTreeNodeLineVO = RuleTreeNodeLineVO.builder()
-//					.treeId(ruleTreeNodeLine.getTreeId())
-//					.ruleNodeFrom(ruleTreeNodeLine.getRuleNodeFrom())
-//					.ruleNodeTo(ruleTreeNodeLine.getRuleNodeTo())
-//					.ruleLimitType(RuleLimitTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitType()))
-//					.ruleLimitValue(RuleLogicCheckTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitValue()))
-//					.build();
-//			//将RuleTreeNodeLineVO对象按照ruleNodeFrom属性分组，存储在ruleTreeNodeLineMap中
-//			List<RuleTreeNodeLineVO> ruleTreeNodeLineVOList = ruleTreeNodeLineMap.computeIfAbsent(ruleTreeNodeLineVO.getRuleNodeFrom(), k -> new ArrayList<>());
-//			ruleTreeNodeLineVOList.add(ruleTreeNodeLineVO);
-//		}
-//
-//		Map<String, RuleTreeNodeVO> treeNodeMap = new HashMap<>();
-//		for (RuleTreeNode ruleTreeNode : ruleTreeNodes) {
-//			RuleTreeNodeVO ruleTreeNodeVo = RuleTreeNodeVO.builder()
-//					.treeId(ruleTreeNode.getTreeId())
-//					.ruleKey(ruleTreeNode.getRuleKey())
-//					.ruleDesc(ruleTreeNode.getRuleDesc())
-//					.ruleValue(ruleTreeNode.getRuleValue())
-//					.build();
-//			treeNodeMap.put(ruleTreeNode.getRuleKey(), ruleTreeNodeVo);
-//		}
-//
-//		ruleTreeVO = RuleTreeVO.builder()
-//				.treeId(ruleTree.getTreeId())
-//				.treeName(ruleTree.getTreeName())
-//				.treeDesc(ruleTree.getTreeDesc())
-//				.treeRootRuleNode(ruleTree.getTreeRootRuleKey())
-//				.treeNodeMap(treeNodeMap)
-//				.build();
-//
-//		redisService.setValue(cacheKey, ruleTreeVO);
-//		return ruleTreeVO;
 		// 优先从缓存获取
-// 优先从缓存获取
 		String cacheKey = Constants.RedisKey.RULE_TREE_VO_KEY + treeId;
 		RuleTreeVO ruleTreeVOCache = redisService.getValue(cacheKey);
 		if (null != ruleTreeVOCache) return ruleTreeVOCache;
@@ -274,13 +228,18 @@ public class StrategyRepository implements IStrategyRepository {
 	@Override
 	public Boolean subtractionAwardStock(String cacheKey) {
 		long surplus = redisService.decr(cacheKey);
+
+		if (surplus == 0) {//库存等于 0 个，发送 MQ消息直接清空
+
+		}
+
 		if (surplus < 0) {//库存小于0，恢复为0个
 			redisService.setValue(cacheKey, 0);
 			return false;
 		}
 
 		//库存正常：对所扣减的库存数加锁（表示当前这个数量的库存已经扣减），这样后续有恢复库存等操作也不会导致超卖（因为消耗过的库存数，都加了锁）
-		String lockKey = cacheKey + Constants.UNDERLINE + surplus;
+		String lockKey = cacheKey + Constants.UNDERLINE + (surplus + 1);
 		Boolean lock = redisService.setNx(lockKey);
 		if (!lock) {
 			log.info("策略奖品库存加锁失败：{}", lockKey);

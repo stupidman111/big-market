@@ -2,6 +2,8 @@ package com.zyy.infrastructure.persistent.redis;
 
 import org.redisson.api.*;
 
+import java.util.concurrent.TimeUnit;
+
 public interface IRedisService {
 	<T> void setValue(String key, T value);
 
@@ -254,4 +256,6 @@ public interface IRedisService {
 	 * @return
 	 */
 	Boolean setNx(String key);
+
+	Boolean setNx(String key, long expired, TimeUnit timeUnit);
 }
