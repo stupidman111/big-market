@@ -1,8 +1,4 @@
-package com.zyy.domain.activity.service.rule;
-
-import com.zyy.domain.activity.model.entity.ActivityCountEntity;
-import com.zyy.domain.activity.model.entity.ActivityEntity;
-import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
+package com.zyy.domain.activity.service.quota.rule;
 
 public abstract class AbstractActionChain implements IActionChain {
 

@@ -1,9 +1,8 @@
 package com.zyy.domain.activity.repository;
 
-import com.zyy.domain.activity.model.aggregate.CreateOrderAggregate;
-import com.zyy.domain.activity.model.entity.ActivityCountEntity;
-import com.zyy.domain.activity.model.entity.ActivityEntity;
-import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
+import com.zyy.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
+import com.zyy.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
+import com.zyy.domain.activity.model.entity.*;
 import com.zyy.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
 import java.util.Date;
@@ -33,9 +32,9 @@ public interface IActivityRepository {
 
 	/**
 	 * 处理订单
-	 * @param createOrderAggregate
+	 * @param createPartakeOrderAggregate
 	 */
-	void doSaveOrder(CreateOrderAggregate createOrderAggregate);
+	void doSaveOrder(CreateQuotaOrderAggregate createPartakeOrderAggregate);
 
 	/**
 	 * 预热 sku 缓存
@@ -81,4 +80,45 @@ public interface IActivityRepository {
 	 * @param sku
 	 */
 	void clearActivitySkuStock(Long sku);
+
+	/**
+	 * 查询未被使用的抽奖订单
+	 * @param partakeRaffleActivityEntity
+	 * @return
+	 */
+	UserRaffleOrderEntity queryNoUsedRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity);
+
+
+	/**
+	 * 保存聚合对象
+	 * @param createPartakeOrderAggregate
+	 */
+	void saveCreatePartakeOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate);
+
+	/**
+	 * 查活动账户
+	 * @param userId
+	 * @param activityId
+	 * @return
+	 */
+	ActivityAccountEntity queryActivityAccountByUserId(String userId, Long activityId);
+
+
+	/**
+	 * 查活动月账户
+	 * @param userId
+	 * @param activityId
+	 * @param month
+	 * @return
+	 */
+	ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId, String month);
+
+	/**
+	 *  查活动日账户
+	 * @param userId
+	 * @param activityId
+	 * @param day
+	 * @return
+	 */
+	ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId, String day);
 }

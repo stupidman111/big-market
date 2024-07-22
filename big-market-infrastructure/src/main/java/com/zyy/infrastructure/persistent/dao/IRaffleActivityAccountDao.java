@@ -10,4 +10,12 @@ public interface IRaffleActivityAccountDao {
 
 	void insert(RaffleActivityAccount raffleActivityAccount);
 
+	int updateActivityAccountSubtractionQuota(RaffleActivityAccount raffleActivityAccount);
+
+	void updateActivityAccountMonthSurplusImageQuota(RaffleActivityAccount raffleActivityAccount);
+
+	void updateActivityAccountDaySurplusImageQuota(RaffleActivityAccount build);
+
+	RaffleActivityAccount queryActivityAccountByUserId(RaffleActivityAccount raffleActivityAccountReq);
+
 }

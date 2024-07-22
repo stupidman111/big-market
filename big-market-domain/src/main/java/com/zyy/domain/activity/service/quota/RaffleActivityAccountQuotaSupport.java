@@ -1,19 +1,19 @@
-package com.zyy.domain.activity.service;
+package com.zyy.domain.activity.service.quota;
 
 import com.zyy.domain.activity.model.entity.ActivityCountEntity;
 import com.zyy.domain.activity.model.entity.ActivityEntity;
 import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
 import com.zyy.domain.activity.repository.IActivityRepository;
-import com.zyy.domain.activity.service.rule.factory.DefaultActionChainFactory;
+import com.zyy.domain.activity.service.quota.rule.factory.DefaultActionChainFactory;
 
-public class RaffleActivitySupport {
+public class RaffleActivityAccountQuotaSupport {
 
 	protected DefaultActionChainFactory defaultActivityFactoryChain;
 
 	protected IActivityRepository activityRepository;
 
-	public RaffleActivitySupport(DefaultActionChainFactory defaultActivityFactoryChain,
-								 IActivityRepository activityRepository) {
+	public RaffleActivityAccountQuotaSupport(DefaultActionChainFactory defaultActivityFactoryChain,
+											 IActivityRepository activityRepository) {
 		this.defaultActivityFactoryChain = defaultActivityFactoryChain;
 		this.activityRepository = activityRepository;
 	}

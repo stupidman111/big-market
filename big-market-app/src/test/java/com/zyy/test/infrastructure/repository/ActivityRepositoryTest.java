@@ -1,11 +1,11 @@
 package com.zyy.test.infrastructure.repository;
 
-import com.zyy.domain.activity.model.aggregate.CreateOrderAggregate;
+import com.zyy.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
+import com.zyy.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
 import com.zyy.domain.activity.model.entity.ActivityOrderEntity;
 import com.zyy.domain.activity.model.valobj.OrderStateVO;
 import com.zyy.domain.activity.repository.IActivityRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,14 +48,14 @@ public class ActivityRepositoryTest {
 		activityOrderEntity.setOutBusinessNO("jd_001");
 
 
-		CreateOrderAggregate createOrderAggregate = new CreateOrderAggregate();
-		createOrderAggregate.setUserId("zy");
-		createOrderAggregate.setActivityId(100301L);
-		createOrderAggregate.setTotalCount(1);
-		createOrderAggregate.setMonthCount(1);
-		createOrderAggregate.setDayCount(1);
-		createOrderAggregate.setActivityOrderEntity(activityOrderEntity);
+		CreateQuotaOrderAggregate createQuotaOrderAggregate = new CreateQuotaOrderAggregate();
+		createQuotaOrderAggregate.setUserId("zy");
+		createQuotaOrderAggregate.setActivityId(100301L);
+		createQuotaOrderAggregate.setTotalCount(1);
+		createQuotaOrderAggregate.setMonthCount(1);
+		createQuotaOrderAggregate.setDayCount(1);
+		createQuotaOrderAggregate.setActivityOrderEntity(activityOrderEntity);
 
-		activityRepository.doSaveOrder(createOrderAggregate);
+		activityRepository.doSaveOrder(createQuotaOrderAggregate);
 	}
 }

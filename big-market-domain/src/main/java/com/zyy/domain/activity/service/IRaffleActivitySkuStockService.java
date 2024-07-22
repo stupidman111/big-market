@@ -2,7 +2,7 @@ package com.zyy.domain.activity.service;
 
 import com.zyy.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
-public interface ISkuStock {
+public interface IRaffleActivitySkuStockService {
 
 	/**
 	 * 获取sku库存消耗队列

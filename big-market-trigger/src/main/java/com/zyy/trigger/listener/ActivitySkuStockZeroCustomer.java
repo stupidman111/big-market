@@ -2,7 +2,7 @@ package com.zyy.trigger.listener;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
-import com.zyy.domain.activity.service.ISkuStock;
+import com.zyy.domain.activity.service.IRaffleActivitySkuStockService;
 import com.zyy.types.event.BaseEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -20,7 +20,7 @@ public class ActivitySkuStockZeroCustomer {
 	private String topic;
 
 	@Resource
-	private ISkuStock skuStock;
+	private IRaffleActivitySkuStockService skuStock;
 
 	/**
 	 * 监听 【库存为 0】的消息，执行 【清空数据库库存】 操作

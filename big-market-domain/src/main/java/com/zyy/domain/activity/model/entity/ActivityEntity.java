@@ -1,5 +1,6 @@
 package com.zyy.domain.activity.model.entity;
 
+import com.zyy.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import com.zyy.domain.activity.model.valobj.ActivityStateVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,4 +34,5 @@ public class ActivityEntity {
 	private Long strategyId;
 	/** 活动状态 **/
 	private ActivityStateVO state;
+
 }

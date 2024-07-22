@@ -1,13 +1,12 @@
-package com.zyy.domain.activity.service.rule.impl;
+package com.zyy.domain.activity.service.quota.rule.impl;
 
 import com.zyy.domain.activity.model.entity.ActivityCountEntity;
 import com.zyy.domain.activity.model.entity.ActivityEntity;
 import com.zyy.domain.activity.model.entity.ActivitySkuEntity;
 import com.zyy.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import com.zyy.domain.activity.repository.IActivityRepository;
-import com.zyy.domain.activity.service.armory.IActivityArmory;
 import com.zyy.domain.activity.service.armory.IActivityDispatch;
-import com.zyy.domain.activity.service.rule.AbstractActionChain;
+import com.zyy.domain.activity.service.quota.rule.AbstractActionChain;
 import com.zyy.types.enums.ResponseCode;
 import com.zyy.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;

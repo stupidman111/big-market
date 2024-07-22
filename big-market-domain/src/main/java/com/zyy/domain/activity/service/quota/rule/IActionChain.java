@@ -1,4 +1,4 @@
-package com.zyy.domain.activity.service.rule;
+package com.zyy.domain.activity.service.quota.rule;
 
 import com.zyy.domain.activity.model.entity.ActivityCountEntity;
 import com.zyy.domain.activity.model.entity.ActivityEntity;

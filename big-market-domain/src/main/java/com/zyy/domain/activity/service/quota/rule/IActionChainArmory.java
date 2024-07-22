@@ -1,4 +1,4 @@
-package com.zyy.domain.activity.service.rule;
+package com.zyy.domain.activity.service.quota.rule;
 
 
 public interface IActionChainArmory {
