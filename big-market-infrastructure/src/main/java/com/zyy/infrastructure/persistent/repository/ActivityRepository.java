@@ -25,7 +25,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -423,5 +425,23 @@ public class ActivityRepository implements IActivityRepository {
 				.dayCount(raffleActivityAccountDayRes.getDayCount())
 				.dayCountSurplus(raffleActivityAccountDayRes.getDayCountSurplus())
 				.build();
+	}
+
+	@Override
+	public List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId) {
+		List<RaffleActivitySku> raffleActivitySkuList = raffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);
+		List<ActivitySkuEntity> activitySkuEntities = new ArrayList<>();
+
+		for (RaffleActivitySku raffleActivitySku : raffleActivitySkuList) {
+			activitySkuEntities.add(ActivitySkuEntity.builder()
+					.sku(raffleActivitySku.getSku())
+					.activityId(activityId)
+					.activityCountId(raffleActivitySku.getActivityCountId())
+					.stockCount(raffleActivitySku.getStockCount())
+					.stockCountSurplus(raffleActivitySku.getStockCountSurplus())
+					.build());
+		}
+
+		return activitySkuEntities;
 	}
 }

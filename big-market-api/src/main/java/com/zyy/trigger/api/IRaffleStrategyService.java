@@ -9,9 +9,9 @@ import com.zyy.types.model.Response;
 import java.util.List;
 
 /**
- * 抽奖服务接口
+ * 抽奖策略服务接口
  */
-public interface IRaffleService {
+public interface IRaffleStrategyService {
 
 	Response<Boolean> strategyArmory(Long strategyId);
 

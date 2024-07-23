@@ -52,6 +52,11 @@ public class StrategyRepository implements IStrategyRepository {
 	@Resource
 	private IRuleTreeNodeLineDao ruleTreeNodeLineDao;
 
+	@Resource
+	private IRaffleActivityDao raffleActivityDao;
+
+	@Resource
+	private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
 	@Override
 	public List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId) {
 
@@ -302,4 +307,27 @@ public class StrategyRepository implements IStrategyRepository {
 
 		return strategyAwardEntity;
 	}
+
+	@Override
+	public Long queryStrategyIdByActivityId(Long activityId) {
+		return raffleActivityDao.queryStrategyIdByActivityId(activityId);
+	}
+
+	@Override
+	public Integer queryTodayUserRaffleCount(String userId, Long strategyId) {
+		//活动 ID
+		Long activityId = raffleActivityDao.queryActivityIdByStrategyId(strategyId);
+
+		RaffleActivityAccountDay raffleActivityAccountDayReq = new RaffleActivityAccountDay();
+		raffleActivityAccountDayReq.setUserId(userId);
+		raffleActivityAccountDayReq.setActivityId(activityId);
+		raffleActivityAccountDayReq.setDay(raffleActivityAccountDayReq.currentDay());
+
+		//统计今日剩余次数
+		RaffleActivityAccountDay raffleActivityAccountDay = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
+		if (null == raffleActivityAccountDay) return 0;
+		return raffleActivityAccountDay.getDayCount() - raffleActivityAccountDay.getDayCountSurplus();
+	}
+
+
 }

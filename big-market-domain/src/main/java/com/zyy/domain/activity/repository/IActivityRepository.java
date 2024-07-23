@@ -6,6 +6,7 @@ import com.zyy.domain.activity.model.entity.*;
 import com.zyy.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
 import java.util.Date;
+import java.util.List;
 
 public interface IActivityRepository {
 
@@ -121,4 +122,12 @@ public interface IActivityRepository {
 	 * @return
 	 */
 	ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId, String day);
+
+	/**
+	 * 根据活动ID 查该活动的所有 SKU
+	 * @param activityId
+	 * @return
+	 */
+	List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId);
+
 }

@@ -57,4 +57,20 @@ public interface IStrategyRepository {
 	void updateStrategyAwardStock(Long strategyId, Integer awardId);
 
 	StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId);
+
+	/**
+	 * 根据活动 id 获取策略 id
+	 * @param activityId
+	 * @return
+	 */
+	Long queryStrategyIdByActivityId(Long activityId);
+
+	/**
+	 * 根据 用户 id、策略 id查今日用户账户次数
+	 * @param userId
+	 * @param strategyId
+	 * @return
+	 */
+	Integer queryTodayUserRaffleCount(String userId, Long strategyId);
+
 }

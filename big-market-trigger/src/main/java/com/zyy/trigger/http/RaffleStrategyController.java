@@ -7,7 +7,7 @@ import com.zyy.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zyy.domain.strategy.service.IRaffleAward;
 import com.zyy.domain.strategy.service.IRaffleStrategy;
 import com.zyy.domain.strategy.service.armory.IStrategyArmory;
-import com.zyy.trigger.api.IRaffleService;
+import com.zyy.trigger.api.IRaffleStrategyService;
 import com.zyy.trigger.api.dto.RaffleAwardListRequestDTO;
 import com.zyy.trigger.api.dto.RaffleAwardListResponseDTO;
 import com.zyy.trigger.api.dto.RaffleRequestDTO;
@@ -25,8 +25,8 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin("${app.config.cross-origin}")
-@RequestMapping("/api/v1/raffle/")
-public class RaffleController implements IRaffleService {
+@RequestMapping("/api/${app.config.api-version}/raffle/strategy/")
+public class RaffleStrategyController implements IRaffleStrategyService {
 
 	@Resource
 	private IRaffleAward raffleAward;

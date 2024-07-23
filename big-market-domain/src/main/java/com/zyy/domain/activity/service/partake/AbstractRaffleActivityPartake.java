@@ -26,6 +26,13 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
 		this.activityRepository = activityRepository;
 	}
 
+	@Override
+	public UserRaffleOrderEntity createOrder(String userId, Long activityId) {
+		return createOrder(PartakeRaffleActivityEntity.builder()
+				.userId(userId)
+				.activityId(activityId)
+				.build());
+	}
 
 	@Override
 	public UserRaffleOrderEntity createOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity) {
