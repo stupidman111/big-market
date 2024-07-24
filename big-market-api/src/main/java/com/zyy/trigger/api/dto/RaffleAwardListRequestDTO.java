@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class RaffleAwardListRequestDTO {
 
-	//抽奖策略 ID
-	private Long strategyId;
+	/** 用户 ID **/
+	private String userId;
+	/** 抽奖活动 ID **/
+	private Long activityId;
 }

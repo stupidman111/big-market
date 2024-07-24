@@ -130,4 +130,11 @@ public interface IActivityRepository {
 	 */
 	List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId);
 
+	/**
+	 * 查询指定用户参与指定活动的日次数
+	 * @param activityId
+	 * @param userId
+	 * @return
+	 */
+	Integer queryRaffleActivityDayPartakeCount(Long activityId, String userId);
 }

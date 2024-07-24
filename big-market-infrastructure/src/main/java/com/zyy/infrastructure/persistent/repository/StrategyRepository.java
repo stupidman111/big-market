@@ -18,10 +18,7 @@ import org.redisson.api.RDelayedQueue;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.zyy.types.enums.ResponseCode.UN_ASSEMBLED_STRATEGY_ARMORY;
@@ -61,7 +58,7 @@ public class StrategyRepository implements IStrategyRepository {
 	public List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId) {
 
 		// 优先从缓存中获取
-		String cacheKey = Constants.RedisKey.STRATEGY_AWARD_KEY + strategyId;
+		String cacheKey = Constants.RedisKey.STRATEGY_AWARD_LIST_KEY + strategyId;
 		List<StrategyAwardEntity> strategyAwardEntities = redisService.getValue(cacheKey);
 		if (null != strategyAwardEntities && !strategyAwardEntities.isEmpty()) return strategyAwardEntities;
 
@@ -231,23 +228,26 @@ public class StrategyRepository implements IStrategyRepository {
 
 	//缓存key，decr方式扣减库存
 	@Override
-	public Boolean subtractionAwardStock(String cacheKey) {
+	public Boolean subtractionAwardStock(String cacheKey, Date endDateTime) {
 		long surplus = redisService.decr(cacheKey);
-
-		if (surplus == 0) {//库存等于 0 个，发送 MQ消息直接清空
-
-		}
 
 		if (surplus < 0) {//库存小于0，恢复为0个
 			redisService.setValue(cacheKey, 0);
 			return false;
 		}
 
-		//库存正常：对所扣减的库存数加锁（表示当前这个数量的库存已经扣减），这样后续有恢复库存等操作也不会导致超卖（因为消耗过的库存数，都加了锁）
-		String lockKey = cacheKey + Constants.UNDERLINE + (surplus + 1);
-		Boolean lock = redisService.setNx(lockKey);
+		// 1. 按照cacheKey decr 后的值，如 99、98、97 和 key 组成为库存锁的key进行使用。
+		// 2. 加锁为了兜底，如果后续有恢复库存，手动处理等，也不会超卖。因为所有的可用库存key，都被加锁了。
+		String lockKey = cacheKey + Constants.UNDERLINE + surplus;
+		Boolean lock = false;
+		if (null != endDateTime) {
+			long expireMillis = endDateTime.getTime() - System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1);
+			lock = redisService.setNx(lockKey, expireMillis, TimeUnit.MILLISECONDS);
+		} else {
+			lock = redisService.setNx(lockKey);
+		}
 		if (!lock) {
-			log.info("策略奖品库存加锁失败：{}", lockKey);
+			log.info("策略奖品库存加锁失败 {}", lockKey);
 		}
 		return lock;
 	}
@@ -327,6 +327,21 @@ public class StrategyRepository implements IStrategyRepository {
 		RaffleActivityAccountDay raffleActivityAccountDay = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
 		if (null == raffleActivityAccountDay) return 0;
 		return raffleActivityAccountDay.getDayCount() - raffleActivityAccountDay.getDayCountSurplus();
+	}
+
+	@Override
+	public Map<String, Integer> queryAwardRuleLockCount(String[] treeIds) {
+		if (null == treeIds || treeIds.length == 0) return new HashMap<>();
+
+		List<RuleTreeNode> ruleTreeNodes = ruleTreeNodeDao.queryRuleLocks(treeIds);
+		Map<String, Integer> resultMap = new HashMap<>();
+		for (RuleTreeNode node : ruleTreeNodes) {
+			String treeId = node.getTreeId();
+			Integer ruleValue = Integer.valueOf(node.getRuleValue());
+			resultMap.put(treeId, ruleValue);
+		}
+
+		return resultMap;
 	}
 
 

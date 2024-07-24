@@ -10,4 +10,6 @@ public interface IRaffleActivityAccountDayDao {
 	void insertActivityAccountDay(RaffleActivityAccountDay raffleActivityAccountDay);
 
 	RaffleActivityAccountDay queryActivityAccountDayByUserId(RaffleActivityAccountDay raffleActivityAccountDayReq);
+
+	Integer queryRaffleActivityAccountDayPartakeCount(RaffleActivityAccountDay raffleActivityAccountDay);
 }

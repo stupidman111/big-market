@@ -8,6 +8,7 @@ import com.zyy.domain.strategy.model.valobj.RuleTreeVO;
 import com.zyy.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.zyy.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public interface IStrategyRepository {
 	void cacheStrategyAwardCount(String cacheKey, Integer awardCount);
 
 	//缓存key，decr方式扣减库存
-	Boolean subtractionAwardStock(String cacheKey);
+	Boolean subtractionAwardStock(String cacheKey, Date endDateTime);
 
 	//写入奖品库存消费队列
 	void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
@@ -73,4 +74,10 @@ public interface IStrategyRepository {
 	 */
 	Integer queryTodayUserRaffleCount(String userId, Long strategyId);
 
+	/**
+	 * 根据规则树 Id，查询奖品中加锁数量的配置【部分奖品需要抽奖N次解锁】
+	 * @param treeIds
+	 * @return
+	 */
+	Map<String, Integer> queryAwardRuleLockCount(String[] treeIds);
 }

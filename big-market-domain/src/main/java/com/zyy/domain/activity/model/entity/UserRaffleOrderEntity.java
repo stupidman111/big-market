@@ -17,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserRaffleOrderEntity {
 
+	/** 用户 ID **/
 	private String userId;
 	/** 活动 ID **/
 	private Long activityId;
@@ -30,6 +31,6 @@ public class UserRaffleOrderEntity {
 	private Date orderTime;
 	/** 订单状态 **/
 	private UserRaffleOrderStateVO orderState;
-	/** 创建时间 **/
-
+	/** 结束时间 */
+	private Date endDateTime;
 }

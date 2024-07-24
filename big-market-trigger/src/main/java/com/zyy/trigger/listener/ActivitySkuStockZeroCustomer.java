@@ -26,20 +26,21 @@ public class ActivitySkuStockZeroCustomer {
 	 * 监听 【库存为 0】的消息，执行 【清空数据库库存】 操作
 	 * @param message
 	 */
-	@RabbitListener(queuesToDeclare = @Queue(value = "activity_sku_stock_zero"))
+	@RabbitListener(queuesToDeclare = @Queue(value = "${spring.rabbitmq.topic.activity_sku_stock_zero}"))
 	public void listener(String message) {
 		try {
-			log.info("监听活动 sku库存消息消耗为 0 的消息 topic:{}, message:{}", topic, message);
-
+			log.info("监听活动sku库存消耗为0消息 topic: {} message: {}", topic, message);
+			// 转换对象
 			BaseEvent.EventMessage<Long> eventMessage = JSON.parseObject(message, new TypeReference<BaseEvent.EventMessage<Long>>() {
 			}.getType());
 			Long sku = eventMessage.getData();
-			skuStock.clearActivitySkuStock(sku);//清空数据库库存
-			skuStock.clearQueueValue();//清空队列
+			// 更新库存
+			skuStock.clearActivitySkuStock(sku);
+			// 清空队列 「此时就不需要延迟更新数据库记录了」todo 清空时，需要设定sku标识，不能全部清空。
+			skuStock.clearQueueValue();
 		} catch (Exception e) {
-			log.error("监听活动 sku库存消息消耗为 0 的消息，消费失败，topic:{}, message:{}", topic, message);
+			log.error("监听活动sku库存消耗为0消息，消费失败 topic: {} message: {}", topic, message);
 			throw e;
 		}
-
 	}
 }
