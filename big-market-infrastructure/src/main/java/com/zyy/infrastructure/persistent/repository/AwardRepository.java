@@ -13,6 +13,7 @@ import com.zyy.infrastructure.persistent.po.UserAwardRecord;
 import com.zyy.types.enums.ResponseCode;
 import com.zyy.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,10 @@ public class AwardRepository implements IAwardRepository {
 	@Resource
 	private EventPublisher eventPublisher;
 
+	@Resource
+	private ApplicationContext applicationContext;
+
+	@Override
 	public void saveUserAwardRecord(UserAwardRecordAggregate userAwardRecordAggregate) {
 		UserAwardRecordEntity userAwardRecordEntity = userAwardRecordAggregate.getUserAwardRecordEntity();
 		TaskEntity taskEntity = userAwardRecordAggregate.getTaskEntity();
@@ -57,7 +62,8 @@ public class AwardRepository implements IAwardRepository {
 		task.setState(taskEntity.getState().getCode());
 
 		try {
-			saveRecordAndTask(userAwardRecord, task);
+			AwardRepository self = applicationContext.getBean(AwardRepository.class);
+			self.saveRecordAndTask(userAwardRecord, task);
 		} catch (DuplicateKeyException e) {
 			log.error("写入中奖记录，唯一索引冲突 userId: {} activityId: {} awardId: {}", userId, activityId, awardId, e);
 			throw new AppException(ResponseCode.INDEX_DUP.getCode(), e);
