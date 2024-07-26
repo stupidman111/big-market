@@ -1,11 +1,15 @@
 package com.zyy.trigger.http;
 
+import com.alibaba.fastjson.JSON;
 import com.zyy.domain.activity.model.entity.UserRaffleOrderEntity;
 import com.zyy.domain.activity.service.IRaffleActivityPartakeService;
 import com.zyy.domain.activity.service.armory.IActivityArmory;
 import com.zyy.domain.award.model.entity.UserAwardRecordEntity;
 import com.zyy.domain.award.model.valobj.AwardStateVO;
 import com.zyy.domain.award.service.IAwardService;
+import com.zyy.domain.rebate.model.entity.BehaviorEntity;
+import com.zyy.domain.rebate.model.valobj.BehaviorTypeVO;
+import com.zyy.domain.rebate.service.IBehaviorRebateService;
 import com.zyy.domain.strategy.model.entity.RaffleAwardEntity;
 import com.zyy.domain.strategy.model.entity.RaffleFactorEntity;
 import com.zyy.domain.strategy.service.IRaffleStrategy;
@@ -21,13 +25,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RestController()
 @CrossOrigin("${app.config.cross-origin}")
 @RequestMapping("/api/${app.config.api-version}/raffle/activity/")
 public class RaffleActivityController implements IRaffleActivityService  {
+
+	private final SimpleDateFormat dateFormatDay = new SimpleDateFormat("yyyyMMdd");
 
 	@Resource
 	private IRaffleActivityPartakeService raffleActivityPartakeService;
@@ -39,6 +47,8 @@ public class RaffleActivityController implements IRaffleActivityService  {
 	private IActivityArmory activityArmory;
 	@Resource
 	private IStrategyArmory strategyArmory;
+	@Resource
+	private IBehaviorRebateService behaviorRebateService;
 
 
 	/**
@@ -132,6 +142,40 @@ public class RaffleActivityController implements IRaffleActivityService  {
 			return Response.<ActivityDrawResponseDTO>builder()
 					.code(ResponseCode.UN_ERROR.getCode())
 					.info(ResponseCode.UN_ERROR.getInfo())
+					.build();
+		}
+	}
+
+	@RequestMapping(value = "calendar_sign_rebate", method = RequestMethod.POST)
+	@Override
+	public Response<Boolean> calendarSignRebate(@RequestParam String userId) {
+		try {
+			log.info("日历签到返利开始 userId:{}", userId);
+			BehaviorEntity behaviorEntity = BehaviorEntity.builder()
+					.userId(userId)
+					.behaviorTypeVO(BehaviorTypeVO.SIGN)
+					.outBusinessNo(dateFormatDay.format(new Date()))
+					.build();
+
+			List<String> orderIds = behaviorRebateService.createOrder(behaviorEntity);
+			log.info("日历签到返利完成 userId:{} orderIds: {}", userId, JSON.toJSONString(orderIds));
+			return Response.<Boolean>builder()
+					.code(ResponseCode.SUCCESS.getCode())
+					.info(ResponseCode.SUCCESS.getInfo())
+					.data(true)
+					.build();
+		} catch (AppException e) {
+			log.error("日历签到返利异常 userId:{} ", userId, e);
+			return Response.<Boolean>builder()
+					.code(e.getCode())
+					.info(e.getInfo())
+					.build();
+		} catch (Exception e) {
+			log.error("日历签到返利失败 userId:{}", userId);
+			return Response.<Boolean>builder()
+					.code(ResponseCode.UN_ERROR.getCode())
+					.info(ResponseCode.UN_ERROR.getInfo())
+					.data(false)
 					.build();
 		}
 	}
